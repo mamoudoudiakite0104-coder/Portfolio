@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mamoudou Diakite | Finance, Risques & Data Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #0ea5e9;
+            --accent-dark: #0284c7;
+            --bg-dark: #020617;
+            --bg-card: #0f172a;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Syne', sans-serif;
+        }
+
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 48px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(14,165,233,0.08) 0%, rgba(14,165,233,0.02) 100%);
+            border: 1px solid rgba(14,165,233,0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-glow {
+            background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(14,165,233,0.12) 0%, transparent 70%);
+        }
+
+        .tag-blue  { background: rgba(14,165,233,0.12); color: #38bdf8; border: 1px solid rgba(14,165,233,0.2); }
+        .tag-cyan  { background: rgba(6,182,212,0.12);  color: #22d3ee; border: 1px solid rgba(6,182,212,0.2);  }
+        .tag-indigo{ background: rgba(99,102,241,0.12); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.2); }
+        .tag-green { background: rgba(16,185,129,0.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2); }
+        .tag-slate { background: rgba(148,163,184,0.10);color: #94a3b8; border: 1px solid rgba(148,163,184,0.15);}
+
+        .project-card {
+            background: rgba(15,23,42,0.8);
+            border: 1px solid rgba(148,163,184,0.08);
+            transition: all 0.35s ease;
+        }
+        .project-card:hover {
+            border-color: rgba(14,165,233,0.4);
+            background: rgba(15,23,42,1);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(14,165,233,0.1);
+        }
+
+        .exp-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .exp-card:hover {
+            box-shadow: 0 12px 40px rgba(14,165,233,0.12);
+            border-color: rgba(14,165,233,0.3);
+        }
+
+        .timeline-dot {
+            width: 10px; height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+            box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
+        }
+
+        /* Scroll animations */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .skill-bar-track { background: #e2e8f0; border-radius: 99px; height: 6px; overflow: hidden; }
+        .skill-bar-fill  { background: linear-gradient(90deg, var(--accent), #38bdf8); border-radius: 99px; height: 100%; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+    </style>
+</head>
+<body x-data="{ scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20)" class="bg-white text-slate-900">
+
+    <!-- ─── HEADER ─────────────────────────────────────────────── -->
+    <header :class="scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'"
+            class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex flex-col leading-none">
+                <span :class="scrolled ? 'text-slate-900' : 'text-white'"
+                      class="text-lg font-display font-bold tracking-tight uppercase transition-colors">Mamoudou Diakite</span>
+                <span class="text-[10px] font-bold tracking-[0.2em] mt-0.5 uppercase"
+                      style="color: var(--accent)">Finance · Risques · Data</span>
+            </div>
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="#accueil"    :class="scrolled ? 'text-slate-600 hover:text-sky-600' : 'text-slate-300 hover:text-white'" class="text-xs font-bold uppercase tracking-widest transition-colors">Accueil</a>
+                <a href="#about"      :class="scrolled ? 'text-slate-600 hover:text-sky-600' : 'text-slate-300 hover:text-white'" class="text-xs font-bold uppercase tracking-widest transition-colors">À propos</a>
+                <a href="#experience" :class="scrolled ? 'text-slate-600 hover:text-sky-600' : 'text-slate-300 hover:text-white'" class="text-xs font-bold uppercase tracking-widest transition-colors">Parcours</a>
+                <a href="#projets"    :class="scrolled ? 'text-slate-600 hover:text-sky-600' : 'text-slate-300 hover:text-white'" class="text-xs font-bold uppercase tracking-widest transition-colors">Projets</a>
+                <div class="flex items-center space-x-4 border-l pl-6 border-slate-700/30">
+                    <a href="mailto:mamoudoudiakite0104@gmail.com"
+                       :class="scrolled ? 'text-slate-900 hover:text-sky-600' : 'text-white hover:text-sky-400'"
+                       class="transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/mamoudoudiakite0104-coder" target="_blank"
+                       :class="scrolled ? 'text-slate-900 hover:text-sky-600' : 'text-white hover:text-sky-400'"
+                       class="transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/mamoudou-diakite-591bb125b" target="_blank"
+                       :class="scrolled ? 'text-slate-900 hover:text-sky-600' : 'text-white hover:text-sky-400'"
+                       class="transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ─── HERO ──────────────────────────────────────────────── -->
+    <section id="accueil" class="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden"
+             style="background-color: var(--bg-dark);">
+        <div class="absolute inset-0 hero-glow"></div>
+        <div class="absolute inset-0 bg-noise opacity-50"></div>
+        <!-- grid lines -->
+        <div class="absolute inset-0 opacity-[0.03]"
+             style="background-image: linear-gradient(#38bdf8 1px,transparent 1px),linear-gradient(90deg,#38bdf8 1px,transparent 1px); background-size: 60px 60px;"></div>
+
+        <div class="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+            <!-- Text -->
+            <div class="flex-1 text-center md:text-left order-2 md:order-1">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] uppercase mb-8"
+                     style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);color:var(--accent)">
+                    <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--accent)"></span>
+                    Finance · Risques · Data Analytics
+                </div>
+
+                <h1 class="font-display font-extrabold leading-[0.88] tracking-tight text-white mb-6"
+                    style="font-size: clamp(3rem,9vw,6.5rem);">
+                    MAMOUDOU<br><span style="color:var(--accent)">DIAKITE</span>
+                </h1>
+
+                <p class="text-slate-400 font-light mb-3 max-w-xl leading-relaxed text-lg">
+                    Étudiant en finance spécialisé en <span class="text-white font-medium">risques et data analytics</span>.
+                </p>
+                <p class="text-slate-500 text-sm mb-10 max-w-xl">
+                    Licence Paris 1 Panthéon-Sorbonne · Futur Master MBFA Paris Nanterre (2026)
+                </p>
+
+                <!-- Stats -->
+                <div class="flex flex-wrap justify-center md:justify-start gap-4 mb-10">
+                    <div class="stat-card px-5 py-3 rounded-2xl text-center">
+                        <p class="font-display font-bold text-white text-xl">2 ans</p>
+                        <p class="text-slate-500 text-[10px] uppercase tracking-widest mt-0.5">Expérience banque</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                    <a href="mailto:mamoudoudiakite0104@gmail.com"
+                       class="px-8 py-4 rounded-2xl font-bold text-white transition-all shadow-lg"
+                       style="background:var(--accent);box-shadow:0 8px 30px rgba(14,165,233,0.35)">
+                       Me contacter
+                    </a>
+                    <a href="#about"
+                       class="px-8 py-4 border border-slate-700 rounded-2xl font-bold text-white hover:bg-slate-800 transition-all">
+                       En savoir plus
+                    </a>
+                </div>
+            </div>
+
+            <!-- Avatar placeholder -->
+            <div class="relative order-1 md:order-2 flex-shrink-0">
+                <div class="relative w-64 h-72 md:w-96 md:h-[420px] rounded-[2.5rem] overflow-hidden border border-slate-800 shadow-2xl">
+                    <img src="MOUD.png" alt="Mamoudou Diakite" class="w-full h-full object-cover">
+                    <!-- accent ring -->
+                    <div class="absolute inset-0 rounded-[2.5rem]"
+                         style="box-shadow:inset 0 0 80px rgba(14,165,233,0.08)"></div>
+                </div>
+                <!-- floating badge -->
+                <div class="absolute -bottom-4 -left-4 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-xl"
+                     style="background:var(--accent)">
+                    Recherche Alternance<br>
+                    <span class="font-normal opacity-80">Sept 2026</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ABOUT ─────────────────────────────────────────────── -->
+    <section id="about" class="py-24 bg-white text-slate-950">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-display font-bold mb-12 section-title uppercase tracking-widest">À propos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+                <div class="md:col-span-2 space-y-5 text-slate-600 text-lg leading-relaxed">
+                    <p>
+                        <span class="font-bold text-slate-900">Étudiant en finance</span> à l'Université Paris 1 Panthéon-Sorbonne, je suis titulaire d'une Licence en Banque et Finance (mention <span class="font-semibold text-slate-900">Très Bien</span>) et me dirige vers un Master MBFA – Risques, Contrôles & Conformité à l'Université Paris Nanterre en 2026.
+                    </p>
+                    <p>
+                        Mon profil s'articule autour de deux axes complémentaires : la <span class="font-bold text-slate-900">modélisation du risque de crédit</span> (approche IRB, Bâle III/EBA, SAS) et l'<span class="font-bold text-slate-900">analyse de données</span> (Python, Power BI, R). Mes expériences en banque – chez UBA et Société Générale Guinée – m'ont permis d'appréhender les enjeux opérationnels concrets du secteur financier.
+                    </p>
+                    <p class="italic text-slate-500">
+                        Rigoureux, curieux et orienté résultats, je recherche une alternance en risques ou data analyse à partir de septembre 2026.
+                    </p>
+                </div>
+
+                <!-- Skills sidebar -->
+                <div class="bg-slate-50 p-7 rounded-3xl border border-slate-100 space-y-6">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Compétences métier</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Risque de crédit</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Économétrie</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Bâle III / EBA</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Marchés financiers</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Analyse financière</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Stack technique</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Python</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">SAS</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">SQL</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">R</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Power BI</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">VBA</span>
+                            <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold">Excel</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Langues</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-medium">
+                                <span>Français</span><span class="text-slate-400">Courant</span>
+                            </div>
+                            <div class="flex justify-between text-sm font-medium">
+                                <span>Anglais</span><span class="text-slate-400">B2 – Opérationnel</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── PROJETS ───────────────────────────────────────────── -->
+    <section id="projets" class="py-24 text-white" style="background-color: var(--bg-dark);">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h2 class="text-3xl font-display font-bold mb-16 section-title uppercase tracking-widest text-white">Projets & Travaux</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Projet 1 – PD IRB -->
+                <div class="project-card p-8 rounded-[2rem] flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <span class="text-4xl font-display font-black opacity-10 text-white">01</span>
+                            <span class="tag-blue px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest">SAS</span>
+                        </div>
+                        <h3 class="text-lg font-display font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">
+                            Modélisation de la Probabilité de Défaut (PD) — Approche IRB Retail
+                        </h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">
+                            Modèle PD conforme Bâle III/EBA sur 300 014 observations (particuliers 2018–2019). Pipeline IRB complet : WoE/IV, régression logistique, scorecard. AUC train = 0,851 / test = 0,843, PSI = 0,006.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag-blue px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">Bâle III</span>
+                            <span class="tag-cyan px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">PROC LOGISTIC</span>
+                            <span class="tag-indigo px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">Scorecard</span>
+                        </div>
+                    </div>
+                    <a href="#" class="mt-8 inline-flex items-center text-sm font-bold text-sky-500 hover:text-sky-300 transition-colors">
+                        Consulter le projet →
+                    </a>
+                </div>
+
+                <!-- Projet 2 – Power BI -->
+                <div class="project-card p-8 rounded-[2rem] flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <span class="text-4xl font-display font-black opacity-10 text-white">02</span>
+                            <span class="tag-green px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest">Power BI</span>
+                        </div>
+                        <h3 class="text-lg font-display font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">
+                            Dashboard Power BI — Analyse de Performance Commerciale 2023
+                        </h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">
+                            Dashboard interactif sur 500 commandes (CA 2,4 M€) : suivi du CA, segmentation géographique (4 régions), analyse des annulations (123 commandes). Mesures DAX pour pilotage stratégique.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag-green px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">DAX</span>
+                            <span class="tag-cyan px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">Power Query</span>
+                            <span class="tag-slate px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">KPI</span>
+                        </div>
+                    </div>
+                    <a href="#" class="mt-8 inline-flex items-center text-sm font-bold text-sky-500 hover:text-sky-300 transition-colors">
+                        Consulter le projet →
+                    </a>
+                </div>
+
+                <!-- Projet 3 – Épargne & Investissement -->
+                <div class="project-card p-8 rounded-[2rem] flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <span class="text-4xl font-display font-black opacity-10 text-white">03</span>
+                            <span class="tag-blue px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest">Python / R</span>
+                        </div>
+                        <h3 class="text-lg font-display font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">
+                            Étude Économétrique — Épargne et Investissement en France
+                        </h3>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-5">
+                            Tests ADF, ARIMA, cointégration de Johansen et VECM sur données Banque Mondiale (1975–2023). Relation de long terme validant empiriquement le puzzle de Feldstein-Horioka.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag-blue px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">VECM</span>
+                            <span class="tag-indigo px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">Johansen</span>
+                            <span class="tag-slate px-2.5 py-1 rounded-md text-[10px] font-bold uppercase">ARIMA</span>
+                        </div>
+                    </div>
+                    <a href="#" class="mt-8 inline-flex items-center text-sm font-bold text-sky-500 hover:text-sky-300 transition-colors">
+                        Consulter le projet →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── EXPÉRIENCES ───────────────────────────────────────── -->
+    <section id="experience" class="py-24 bg-slate-50">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-3xl font-display font-bold mb-12 section-title uppercase tracking-widest text-slate-900">Expériences Professionnelles</h2>
+
+            <div class="space-y-6">
+                <!-- UBA -->
+                <div class="exp-card p-8 rounded-3xl">
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                        <div>
+                            <h3 class="text-xl font-display font-bold text-slate-900">Stagiaire Data Analyst</h3>
+                            <p class="font-semibold text-lg mt-0.5" style="color:var(--accent)">UBA – Direction du Digital Banking · Conakry, Guinée</p>
+                            <ul class="mt-4 space-y-2 text-slate-600 text-sm">
+                                <li class="flex gap-2"><span class="timeline-dot mt-1.5"></span>Déploiement de 2 nouvelles fonctionnalités sur l'application mobile ; onboarding de 15+ clients/jour sur les services E-banking.</li>
+                                <li class="flex gap-2"><span class="timeline-dot mt-1.5"></span>Tests fonctionnels, assistance technique et fiabilisation de la base de données clients.</li>
+                                <li class="flex gap-2"><span class="timeline-dot mt-1.5"></span>Analyse et reporting des données d'utilisation des services digitaux pour identifier les axes d'amélioration UX.</li>
+                            </ul>
+                        </div>
+                        <div class="flex-shrink-0 text-slate-500 font-bold text-sm bg-slate-100 px-5 py-2 rounded-full tracking-tighter whitespace-nowrap self-start">
+                            Juin 2024 — Juin 2025
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SGG -->
+                <div class="exp-card p-8 rounded-3xl">
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                        <div>
+                            <h3 class="text-xl font-display font-bold text-slate-900">Stagiaire Back Office – Service Client</h3>
+                            <p class="font-semibold text-lg mt-0.5" style="color:var(--accent)">Société Générale Guinée (SGG) · Conakry, Guinée</p>
+                            <ul class="mt-4 space-y-2 text-slate-600 text-sm">
+                                <li class="flex gap-2"><span class="timeline-dot mt-1.5"></span>Accueil et conseil personnalisé des clients ; accompagnement vers les services digitaux.</li>
+                                <li class="flex gap-2"><span class="timeline-dot mt-1.5"></span>Gestion des procédures d'ouverture de comptes courants et d'épargne.</li>
+                                <li class="flex gap-2"><span class="timeline-dot mt-1.5"></span>Contrôle de conformité des pièces justificatives et mise à jour des données dans le système d'information.</li>
+                            </ul>
+                        </div>
+                        <div class="flex-shrink-0 text-slate-500 font-bold text-sm bg-slate-100 px-5 py-2 rounded-full tracking-tighter whitespace-nowrap self-start">
+                            Déc 2023 — Fév 2024
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── FORMATION ──────────────────────────────────────────── -->
+    <section id="formation" class="py-24 bg-white border-t border-slate-100">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-3xl font-display font-bold mb-12 section-title uppercase tracking-widest text-slate-900">Formation</h2>
+
+            <div class="space-y-10">
+                <div class="flex gap-6">
+                    <div class="font-display font-black text-4xl opacity-[0.07] text-slate-900 flex-shrink-0">01</div>
+                    <div>
+                        <p class="font-display font-bold text-slate-900 text-xl">Master MBFA – Risques, Contrôles & Conformité</p>
+                        <p style="color:var(--accent)" class="font-semibold">Université Paris Nanterre</p>
+                        <p class="text-slate-500 text-sm mt-1">Gestion des Risques Bancaires · Réglementation Prudentielle · Contrôle Interne · Finance Quantitative</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">2026 – 2028 · Prévu</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-6">
+                    <div class="font-display font-black text-4xl opacity-[0.07] text-slate-900 flex-shrink-0">02</div>
+                    <div>
+                        <p class="font-display font-bold text-slate-900 text-xl">Licence 3 en Économie</p>
+                        <p style="color:var(--accent)" class="font-semibold">Université Paris 1 Panthéon-Sorbonne</p>
+                        <p class="text-slate-500 text-sm mt-1">Microéconomie · Macroéconomie · Statistiques & Probabilités · Monnaie Banque Finance · Mathématiques avancées</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">Sep 2025 – Présent</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-6">
+                    <div class="font-display font-black text-4xl opacity-[0.07] text-slate-900 flex-shrink-0">03</div>
+                    <div>
+                        <p class="font-display font-bold text-slate-900 text-xl">Licence en Banque et Finance</p>
+                        <p style="color:var(--accent)" class="font-semibold">UGLC-S, Conakry</p>
+                        <p class="text-slate-500 text-sm mt-1">Mention <strong class="text-slate-700">Très Bien</strong> · Économétrie · Calcul Actuariel · Analyse Financière · Marchés Financiers · Risque & Assurance</p>
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">Oct 2019 – Juin 2022</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── SOFT SKILLS & CERTIF ──────────────────────────────── -->
+    <section class="py-24 text-white" style="background-color: var(--bg-dark);">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-display font-bold mb-16 text-center uppercase tracking-widest text-white">Compétences & Certifications</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Soft skills -->
+                <div class="space-y-5">
+                    <h4 class="text-xs font-black uppercase tracking-widest text-sky-500 mb-6">Soft skills</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-4 rounded-2xl flex items-center gap-3"
+                             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                            <span class="text-lg">💬</span>
+                            <span class="text-sm font-semibold text-white">Communication</span>
+                        </div>
+                        <div class="p-4 rounded-2xl flex items-center gap-3"
+                             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                            <span class="text-lg">🎯</span>
+                            <span class="text-sm font-semibold text-white">Rigueur analytique</span>
+                        </div>
+                        <div class="p-4 rounded-2xl flex items-center gap-3"
+                             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                            <span class="text-lg">🤝</span>
+                            <span class="text-sm font-semibold text-white">Travail en équipe</span>
+                        </div>
+                        <div class="p-4 rounded-2xl flex items-center gap-3"
+                             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                            <span class="text-lg">⚡</span>
+                            <span class="text-sm font-semibold text-white">Adaptabilité</span>
+                        </div>
+                        <div class="p-4 rounded-2xl flex items-center gap-3"
+                             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                            <span class="text-lg">👥</span>
+                            <span class="text-sm font-semibold text-white">Service client</span>
+                        </div>
+                        <div class="p-4 rounded-2xl flex items-center gap-3"
+                             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                            <span class="text-lg">📚</span>
+                            <span class="text-sm font-semibold text-white">Curiosité · Lecture</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div class="space-y-4">
+                    <h4 class="text-xs font-black uppercase tracking-widest text-sky-500 mb-6">Certifications & Badges</h4>
+                    <a href="https://www.credly.com" target="_blank"
+                       class="flex justify-between items-center p-4 rounded-2xl transition-all group"
+                       style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+                        <div>
+                            <p class="text-sm font-semibold text-white">SAS Certifications</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5 uppercase tracking-widest">Voir sur Credly</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-sky-500 opacity-60 group-hover:opacity-100 uppercase tracking-widest">→</span>
+                    </a>
+
+                    <div class="flex justify-between items-center p-4 rounded-2xl transition-all group"
+                         style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+                        <div>
+                            <p class="text-sm font-semibold text-white">Dataiku Core Designer</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5 uppercase tracking-widest">Dataiku DSS</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-sky-500 opacity-60 group-hover:opacity-100 uppercase tracking-widest">→</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl" style="background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.15)">
+                        <p class="text-xs text-sky-400 font-bold uppercase tracking-widest mb-1">Outils E-Banking</p>
+                        <p class="text-sm text-slate-300">Expérience pratique – UBA Guinée</p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Logiciels comptables</p>
+                        <p class="text-sm text-slate-300">Sage 100 Comptabilité</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── FOOTER ────────────────────────────────────────────── -->
+    <footer class="py-16 text-white text-center border-t border-white/5"
+            style="background-color:var(--bg-dark)">
+        <div class="container mx-auto px-6">
+            <h2 class="text-2xl font-display font-bold mb-8 text-white">Contact professionnel</h2>
+            <div class="flex flex-wrap justify-center gap-6 mb-12 text-slate-400">
+                <a href="mailto:mamoudoudiakite0104@gmail.com"
+                   class="hover:text-white transition-colors">mamoudoudiakite0104@gmail.com</a>
+                <span class="text-slate-700">|</span>
+                <span>+33 07 81 31 07</span>
+                <span class="text-slate-700">|</span>
+                <span>Paris, France</span>
+            </div>
+            <div class="flex justify-center gap-6 mb-10">
+                <a href="https://github.com/mamoudoudiakite0104-coder" target="_blank"
+                   class="text-slate-500 hover:text-white transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    <span class="text-sm font-semibold">GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/mamoudou-diakite-591bb125b" target="_blank"
+                   class="text-slate-500 hover:text-white transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    <span class="text-sm font-semibold">LinkedIn</span>
+                </a>
+            </div>
+            <p class="text-slate-600 text-[10px] italic tracking-[0.3em] uppercase">
+                © 2025 Mamoudou Diakite · Étudiant en Finance &amp; Data Analytics
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal on scroll
+        const reveals = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => io.observe(el));
+    </script>
+</body>
+</html>
