@@ -31,30 +31,9 @@
       background: var(--navy);
       color: var(--slate-lt);
       overflow-x: hidden;
-      cursor: none;
     }
 
-    /* Custom cursor */
-    #cursor {
-      position: fixed; top: 0; left: 0; z-index: 9999;
-      width: 10px; height: 10px;
-      background: var(--gold);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%,-50%);
-      transition: width .2s, height .2s, opacity .2s;
-      mix-blend-mode: screen;
-    }
-    #cursor-ring {
-      position: fixed; top: 0; left: 0; z-index: 9998;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(200,164,94,.35);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%,-50%);
-      transition: width .35s ease, height .35s ease;
-    }
-    a, button { cursor: none; }
+
 
     /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 4px; }
@@ -485,9 +464,6 @@
 </head>
 <body>
 
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
-
   <!-- ═══ HEADER ═══ -->
   <header id="site-header">
     <div class="header-inner">
@@ -737,7 +713,7 @@
         <div class="reveal-right">
           <p class="label" style="color:var(--gold);margin-bottom:1.25rem;">Certifications &amp; Outils</p>
           <div class="certif-list">
-            <div class="certif-item"><a href="https://www.credly.com" target="_blank"><div><div class="certif-name">SAS Certifications</div><div class="certif-sub">Voir sur Credly</div></div><span class="certif-arrow">→</span></a></div>
+            <div class="certif-item"><div style="width:100%"><div class="certif-name">SAS Certifications</div><div class="certif-sub">Statistiques · Modélisation · Data Analytics</div></div></div>
             <div class="certif-item"><div style="width:100%"><div class="certif-name">Dataiku Core Designer</div><div class="certif-sub">Dataiku DSS</div></div></div>
             
             <div class="certif-item"><div style="width:100%"><div class="certif-name">Sage 100 Comptabilité</div><div class="certif-sub">Logiciels comptables</div></div></div>
@@ -781,24 +757,6 @@
   </footer>
 
   <script>
-    /* CURSOR */
-    const cursor = document.getElementById('cursor');
-    const ring   = document.getElementById('cursor-ring');
-    let mx=0,my=0,rx=0,ry=0;
-    document.addEventListener('mousemove', e => {
-      mx=e.clientX; my=e.clientY;
-      cursor.style.left=mx+'px'; cursor.style.top=my+'px';
-    });
-    (function animRing(){
-      rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-      ring.style.left=rx+'px'; ring.style.top=ry+'px';
-      requestAnimationFrame(animRing);
-    })();
-    document.querySelectorAll('a,button').forEach(el=>{
-      el.addEventListener('mouseenter',()=>{ cursor.style.width='18px'; cursor.style.height='18px'; ring.style.width='52px'; ring.style.height='52px'; });
-      el.addEventListener('mouseleave',()=>{ cursor.style.width='10px'; cursor.style.height='10px'; ring.style.width='36px'; ring.style.height='36px'; });
-    });
-
     /* HEADER */
     const hdr = document.getElementById('site-header');
     window.addEventListener('scroll',()=>{ hdr.classList.toggle('scrolled', window.scrollY>30); });
